@@ -1,0 +1,11 @@
+FROM python:3.11-slim
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Télécharge le modèle pendant le build
+RUN python -c "from rembg import new_session; new_session('u2netp')"
+
+COPY app.py .
+CMD uvicorn app:app --host 0.0.0.0 --port ${PORT:-10000}
